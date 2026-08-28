@@ -23,6 +23,12 @@ create table if not exists registrations (
   unique(event_id, email)
 );
 
+alter table events disable row level security;
+alter table registrations disable row level security;
+grant usage on schema public to anon;
+grant select on events to anon;
+grant select, insert on registrations to anon;
+
 insert into events (id, title, category, description, venue, event_date, max_slots) values
 ('code-sprint','Code Sprint','Coding','A fast-paced build challenge for practical problem solvers.','Innovation Lab','2026-09-15T10:30:00+05:30',100),
 ('pixel-punch','Pixel Punch','Design','Design a bold interface around a surprise prompt.','Design Studio','2026-09-15T14:00:00+05:30',80),
