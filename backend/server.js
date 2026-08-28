@@ -1,0 +1,20 @@
+import 'dotenv/config';
+import express from 'express';
+import cors from 'cors';
+import { eventRoutes } from './routes/events.js';
+import { registrationRoutes } from './routes/registrations.js';
+import { participantRoutes } from './routes/participants.js';
+import { voucherRoutes } from './routes/voucher.js';
+
+const app = express();
+const port = process.env.PORT || 5000;
+app.use(cors());
+app.use(express.json());
+app.get('/api/health', (_req, res) => res.json({ status: 'ok', service: 'kle-tech-fest-api' }));
+app.use('/api/events', eventRoutes);
+app.use('/api/registrations', registrationRoutes);
+app.use('/api/participants', participantRoutes);
+app.use('/api/voucher', voucherRoutes);
+app.use((_req, res) => res.status(404).json({ error: 'Route not found.' }));
+app.use((error, _req, res, _next) => { console.error(error); res.status(500).json({ error: 'The server could not complete that request.' }); });
+app.listen(port, () => console.log(`KLE Fest API listening on port ${port}`));
