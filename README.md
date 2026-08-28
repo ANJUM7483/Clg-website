@@ -64,7 +64,10 @@ Create a root `.env` from `.env.example`:
 PORT=5000
 SUPABASE_URL=https://your-project.supabase.co
 SUPABASE_ANON_KEY=your-supabase-anon-key
+SUPABASE_SERVICE_ROLE_KEY=your-supabase-service-role-key
 ```
+
+The API prefers `SUPABASE_SERVICE_ROLE_KEY` because it runs server-side and must write registrations when Supabase Row Level Security is enabled. Do not expose this key in frontend code or commit it to Git.
 
 Run `supabase/schema.sql` in the Supabase SQL editor, then start both applications:
 
@@ -73,6 +76,17 @@ npm run dev
 ```
 
 The Vite frontend runs at `http://localhost:5173` and the API at `http://localhost:5000`. To point the frontend at another API, set `VITE_API_URL` in `frontend/.env.local`.
+
+## Deploy on Render
+
+This repository includes `render.yaml` for a free Render deployment with separate services:
+
+1. In Render, choose **New > Blueprint** and connect this GitHub repository.
+2. Keep the two services defined in `render.yaml`: `kle-tech-fest-api` (Web Service) and `kle-tech-fest-frontend` (Static Site).
+3. Enter `SUPABASE_URL`, `SUPABASE_ANON_KEY` and the Supabase **service role** key when Render prompts for the API service environment variables. The service role key is available in Supabase under **Project Settings > API**.
+4. Deploy. The frontend is configured to call `https://kle-tech-fest-api.onrender.com/api` and client-side routes are rewritten to `index.html`.
+
+Render free web services sleep after inactivity, so the first API request after a quiet period may take a few seconds.
 
 ## API
 

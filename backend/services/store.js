@@ -1,8 +1,9 @@
 import { createClient } from '@supabase/supabase-js';
 import { events, registrations } from '../data.js';
 
-const hasSupabase = Boolean(process.env.SUPABASE_URL && process.env.SUPABASE_ANON_KEY);
-const supabase = hasSupabase ? createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY) : null;
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY;
+const hasSupabase = Boolean(process.env.SUPABASE_URL && supabaseKey);
+const supabase = hasSupabase ? createClient(process.env.SUPABASE_URL, supabaseKey) : null;
 
 export async function listEvents() {
   if (supabase) {
