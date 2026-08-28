@@ -6,6 +6,7 @@ services:
     rootDir: backend
     buildCommand: npm install
     startCommand: npm start
+    autoDeployTrigger: commit
     healthCheckPath: /api/health
     envVars:
       - key: SUPABASE_URL
@@ -19,6 +20,7 @@ services:
     rootDir: frontend
     buildCommand: npm install && npm run build
     staticPublishPath: frontend/dist
+    autoDeployTrigger: commit
     envVars:
       - key: VITE_API_URL
         value: https://kle-tech-fest-api.onrender.com/api
